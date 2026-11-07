@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" content="#fdf9f7" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://*.hf.space wss://*.hf.space https://huggingface.co https://cdn.jsdelivr.net; frame-src 'none'; worker-src 'self' blob:; manifest-src 'self';">
+  <meta name="description" content="After Hours — slow-burn, psychologically realistic roleplay. Real people, earned intimacy, and the tension of almost. Powered by your own Hugging Face Space." />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="After Hours" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin />
+  <script>
+    (() => {
+      const saved = localStorage.getItem("ah_theme");
+      const theme = saved === "light" || saved === "dark"
+        ? saved
+        : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#1a1216" : "#fdf9f7";
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+  <title>After Hours</title>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <button type="button" class="icon-btn" id="sagas-btn" aria-label="Your stories">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </button>
+      <div class="header-title">
+        <h1 class="app-title">After Hours</h1>
+        <div class="status-badge" id="status-badge" data-state="disconnected">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="status-text">Offline</span>
+        </div>
+      </div>
+      <button type="button" class="icon-btn" id="lore-btn" aria-label="Threads — shared history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+      <button type="button" class="icon-btn" id="theme-btn" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button type="button" class="icon-btn" id="settings-btn" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </header>
+
+    <div class="persona-strip" id="persona-strip" role="tablist" aria-label="Personas"></div>
+
+    <button type="button" class="closeness-pill" id="story-btn" aria-label="This story — closeness, pacing and memory">
+      <span class="closeness-dot" id="closeness-dot" aria-hidden="true"></span>
+      <span id="closeness-label">Strangers</span>
+      <span class="closeness-track" aria-hidden="true"><span class="closeness-fill" id="closeness-fill"></span></span>
+      <span class="closeness-value" id="closeness-value">8</span>
+    </button>
+
+    <main class="transcript" id="transcript" aria-live="polite"></main>
+
+    <div class="director-bar" aria-label="Scene tools">
+      <button type="button" class="director-btn" id="continue-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Continue
+      </button>
+      <button type="button" class="director-btn" id="timeskip-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+        Time skip
+      </button>
+      <button type="button" class="director-btn" id="thoughts-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        Inner thoughts
+      </button>
+    </div>
+
+    <footer class="composer-wrap">
+      <div class="context-meter" id="context-meter" hidden>
+        <span id="context-label">0 / 12000 chars</span>
+        <span class="context-track"><span class="context-fill" id="context-fill"></span></span>
+      </div>
+      <form class="composer" id="composer">
+        <textarea id="input" rows="1" placeholder="Say something…" aria-label="Message" enterkeyhint="send"></textarea>
+        <button type="submit" class="send-btn" id="send-btn" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+      </form>
+    </footer>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+
+  <section class="sheet" id="sheet-sagas" role="dialog" aria-modal="true" aria-labelledby="sheet-sagas-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-sagas-title">Your stories</h2>
+      <button type="button" class="icon-btn sheet-close" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <button type="button" class="pill-btn primary" id="new-saga-btn">＋ New story with <span id="new-saga-persona">this person</span></button>
+      <ul class="saga-list" id="saga-list"></ul>
+    </div>
+  </section>
+
+  <section class="sheet" id="sheet-personas" role="dialog" aria-modal="true" aria-labelledby="sheet-personas-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-personas-title">The people</h2>
+      <button type="button" class="icon-btn sheet-close" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <p class="sheet-note">Tap someone to edit or remove them — built-ins included. Removed built-ins can be restored anytime.</p>
+      <ul class="roster-list" id="roster-list"></ul>
+      <button type="button" class="pill-btn" id="restore-personas" hidden>Restore built-in characters</button>
+      <h3 class="sheet-sub" id="persona-form-title">Create someone</h3>
+      <form id="persona-form" class="stack">
+        <input type="hidden" id="persona-id" />
+        <div class="field">
+          <label for="persona-name">Name</label>
+          <input id="persona-name" type="text" maxlength="40" required placeholder="e.g. Claire from the bookstore" />
+        </div>
+        <div class="field">
+          <label for="persona-tagline">Tagline</label>
+          <input id="persona-tagline" type="text" maxlength="80" placeholder="The one who got away · ten years later" />
+        </div>
+        <div class="field">
+          <label for="persona-genre">Dynamic</label>
+          <input id="persona-genre" type="text" maxlength="40" placeholder="Second chance" />
+        </div>
+        <div class="field">
+          <span class="field-label" id="persona-color-label">Color</span>
+          <div class="swatches" id="persona-colors" role="radiogroup" aria-labelledby="persona-color-label"></div>
+        </div>
+        <div class="field">
+          <label for="persona-prompt">Who they are</label>
+          <textarea id="persona-prompt" rows="5" maxlength="4000" required placeholder="Their history, their defenses, what they want and won't admit. Slow-burn rules."></textarea>
+        </div>
+        <div class="field">
+          <label for="persona-greeting">Opening moment</label>
+          <textarea id="persona-greeting" rows="3" maxlength="1200" placeholder="The scene that starts every new story with them."></textarea>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="pill-btn primary" id="persona-save">Save</button>
+          <button type="button" class="pill-btn" id="persona-reset">Clear</button>
+          <button type="button" class="pill-btn danger" id="persona-delete" hidden>Delete</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sheet" id="sheet-lore" role="dialog" aria-modal="true" aria-labelledby="sheet-lore-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-lore-title">Threads</h2>
+      <button type="button" class="icon-btn sheet-close" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body">
+      <p class="sheet-note">The small details that mean everything. A thread resurfaces in the prompt when its keywords appear in your recent messages.</p>
+      <ul class="lore-list" id="lore-list"></ul>
+      <h3 class="sheet-sub" id="lore-form-title">Add a thread</h3>
+      <form id="lore-form" class="stack">
+        <input type="hidden" id="lore-id" />
+        <div class="field">
+          <label for="lore-title">Title</label>
+          <input id="lore-title" type="text" maxlength="60" required placeholder="e.g. The jacket she never returned" />
+        </div>
+        <div class="field">
+          <label for="lore-keys">Trigger keywords (comma-separated)</label>
+          <input id="lore-keys" type="text" required placeholder="jacket, borrowed, closet" />
+        </div>
+        <div class="field">
+          <label for="lore-content">What it means</label>
+          <textarea id="lore-content" rows="4" maxlength="1500" required placeholder="The fact, and the weight it carries between you."></textarea>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="pill-btn primary" id="lore-save">Save thread</button>
+          <button type="button" class="pill-btn" id="lore-reset">Clear</button>
+          <button type="button" class="pill-btn danger" id="lore-delete" hidden>Delete</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sheet" id="sheet-story" role="dialog" aria-modal="true" aria-labelledby="sheet-story-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-story-title">This story</h2>
+      <button type="button" class="icon-btn sheet-close" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body stack">
+      <div class="field">
+        <label for="saga-title-input">Title</label>
+        <input id="saga-title-input" type="text" maxlength="80" />
+      </div>
+      <div class="field">
+        <label for="closeness-slider">Closeness — <span id="closeness-stage-label">Strangers</span></label>
+        <input id="closeness-slider" type="range" min="0" max="100" step="1" value="8" />
+      </div>
+      <div class="field">
+        <label for="pacing-select">Pacing</label>
+        <select id="pacing-select">
+          <option value="glacial">Glacial — almost nothing happens, everything shifts</option>
+          <option value="slow" selected>Slow burn — small, earned steps</option>
+          <option value="steady">Steady — forward when the moment earns it</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="tone-select">Tone</label>
+        <select id="tone-select">
+          <option value="tender" selected>Tender — warmth carries the charge</option>
+          <option value="charged">Charged — a current under every exchange</option>
+          <option value="raw">Raw — honest to the point of discomfort</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="memory-input">Story memory</label>
+        <textarea id="memory-input" rows="5" maxlength="4000" placeholder="What happened, what was said, what was almost said…"></textarea>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="pill-btn primary" id="story-save">Save</button>
+        <button type="button" class="pill-btn" id="summarize-btn">✦ Summarize into memory</button>
+      </div>
+      <p class="sheet-note" id="story-note"></p>
+    </div>
+  </section>
+
+  <section class="sheet sheet-fixed" id="sheet-settings" role="dialog" aria-modal="true" aria-labelledby="sheet-settings-title" hidden>
+    <div class="sheet-head fixed-head">
+      <button type="button" class="icon-btn sheet-close back-btn" data-close aria-label="Back">‹</button>
+      <h2 id="sheet-settings-title">Settings</h2>
+    </div>
+    <div class="sheet-body">
+      <form id="settings-form" class="stack">
+        <div class="field">
+          <label for="space-input">Hugging Face Space</label>
+          <input id="space-input" type="text" placeholder="username/your-space" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="endpoint-input">API endpoint</label>
+          <input id="endpoint-input" type="text" placeholder="/chat_response" autocomplete="off" autocapitalize="off" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="username-input">Your name in the story</label>
+          <input id="username-input" type="text" maxlength="40" placeholder="What they call you" />
+        </div>
+        <div class="field">
+          <label for="context-slider">Context length — <span id="context-value">12,000 chars (~3,000 tokens)</span></label>
+          <input id="context-slider" type="range" min="2000" max="32000" step="1000" value="12000" />
+          <p class="field-hint">How much of the conversation rides along in every prompt. More context = longer memory, heavier replies.</p>
+        </div>
+        <div class="field">
+          <label for="token-input">HF access token</label>
+          <input id="token-input" type="password" placeholder="hf_…" autocomplete="off" />
+          <p class="field-hint">Stored only on this device. Never sent anywhere except Hugging Face. Needs Read access to your Space.</p>
+        </div>
+        <div class="btn-row">
+          <button type="submit" class="pill-btn primary">Save &amp; connect</button>
+          <button type="button" class="pill-btn" id="forget-token-btn">Forget token</button>
+        </div>
+      </form>
+      <h3 class="sheet-sub">Data</h3>
+      <div class="btn-row">
+        <button type="button" class="pill-btn" id="export-btn">Export backup</button>
+        <button type="button" class="pill-btn" id="import-btn">Import backup</button>
+        <input type="file" id="import-file" accept="application/json,.json" hidden />
+      </div>
+      <p class="sheet-note">Backups contain stories, people and threads — never your token.</p>
+    </div>
+  </section>
+
+  <section class="sheet sheet-mini" id="sheet-timeskip" role="dialog" aria-modal="true" aria-labelledby="sheet-timeskip-title" hidden>
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <h2 id="sheet-timeskip-title">Time skip</h2>
+      <button type="button" class="icon-btn sheet-close" data-close aria-label="Close">✕</button>
+    </div>
+    <div class="sheet-body stack">
+      <div class="preset-row" role="group" aria-label="Time skip options">
+        <button type="button" class="pill-btn skip-preset" data-skip="later that night, after a few hours apart">Later that night</button>
+        <button type="button" class="pill-btn skip-preset" data-skip="the next morning">Next morning</button>
+        <button type="button" class="pill-btn skip-preset" data-skip="a few days later, after silence neither of you addresses">A few days later</button>
+        <button type="button" class="pill-btn skip-preset" data-skip="a week later — something has shifted in the meantime">A week later</button>
+      </div>
+      <p class="sheet-note">The scene resumes after the skip — the distance itself becomes part of the story.</p>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" hidden>
+    <span id="toast-text"></span>
+    <button type="button" class="toast-action" id="toast-action" hidden>Undo</button>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
